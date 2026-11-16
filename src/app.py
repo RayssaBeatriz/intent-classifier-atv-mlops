@@ -1,3 +1,4 @@
+import os 
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
@@ -16,7 +17,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="API de MLOps",
     description='...',
-    version='0.1.0',
+    version=os.getenv('APP_VERSION', 'dev'),
     docs_url='/docs',
     lifespan=lifespan
 ) 
@@ -25,4 +26,4 @@ app.include_router(intent_clf_router)
 
 @app.get('/')
 def root():
-    return {'status': 'ok'}
+    return {'status': 'ok', 'version': os.getenv('APP_VERSION', 'dev')}
